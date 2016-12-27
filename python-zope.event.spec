@@ -1,8 +1,9 @@
+%define	module zope.event
 Summary:	Simple event system
 Summary(pl.UTF-8):	Prosty system zdarzeń
-Name:		Zope-Event
+Name:		python-%{module}
 Version:	3.4.1
-Release:	3
+Release:	1
 License:	ZPL 2.1
 Group:		Libraries/Python
 Source0:	http://pypi.python.org/packages/source/z/zope.event/zope.event-%{version}.tar.gz
@@ -14,6 +15,7 @@ BuildRequires:	python-setuptools
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.710
 %pyrequires_eq	python-modules
+Obsoletes:	Zope-Event
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -33,7 +35,7 @@ Pakiet zope.event udostępnia prosty system zdarzeń. Zawiera:
   zope.event, można znaleźć w zope.component)
 
 %prep
-%setup -q -n zope.event-%{version}
+%setup -q -n %{module}-%{version}
 
 %build
 %py_build
