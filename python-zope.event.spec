@@ -117,8 +117,7 @@ PYTHONPATH=$(pwd)/src \
 
 %if %{with doc}
 PYTHONPATH=$(pwd)/src \
-%{__make} -C docs html \
-	SPHINXBUILD=sphinx-build-2
+%{__make} -C docs html
 %endif
 
 %install
