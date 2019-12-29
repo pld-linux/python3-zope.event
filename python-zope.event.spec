@@ -1,5 +1,7 @@
 #
 # Conditional build:
+%bcond_without	doc	# Sphinx documentation
+%bcond_without	tests	# unit tests
 %bcond_without	python2 # CPython 2.x module
 %bcond_without	python3 # CPython 3.x module
 
@@ -7,26 +9,37 @@
 Summary:	Simple event system
 Summary(pl.UTF-8):	Prosty system zdarzeń
 Name:		python-%{module}
-Version:	4.3.0
-Release:	3
-License:	ZPL 2.1
+Version:	4.4
+Release:	1
+License:	ZPL v2.1
 Group:		Libraries/Python
+#Source0Download: https://pypi.org/simple/zope-event/
 Source0:	https://files.pythonhosted.org/packages/source/z/zope.event/zope.event-%{version}.tar.gz
-# Source0-md5:	8ca737960741c6fd112972f3313303bd
-URL:		http://www.zope.org/
+# Source0-md5:	54e5bf148548726d626ec47bb01bec41
+URL:		https://www.zope.org/
 %if %{with python2}
-BuildRequires:	python >= 1:2.5
-BuildRequires:	python-devel >= 1:2.5
+BuildRequires:	python >= 1:2.7
+BuildRequires:	python-devel >= 1:2.7
 BuildRequires:	python-setuptools
+%if %{with tests}
+BuildRequires:	python-zope.testrunner
+%endif
 %endif
 %if %{with python3}
-BuildRequires:	python3
-BuildRequires:	python3-devel
+BuildRequires:	python3 >= 1:3.4
+BuildRequires:	python3-devel >= 1:3.4
 BuildRequires:	python3-setuptools
+%if %{with tests}
+BuildRequires:	python3-zope.testrunner
+%endif
 %endif
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.710
-%pyrequires_eq	python-modules
+BuildRequires:	rpmbuild(macros) >= 1.714
+%if %{with doc}
+BuildRequires:	sphinx-pdg
+%endif
+Requires:	python-modules >= 1:2.7
+Requires:	python-zope-base
 Obsoletes:	Zope-Event
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -50,6 +63,8 @@ Pakiet zope.event udostępnia prosty system zdarzeń. Zawiera:
 Summary:	Simple event system
 Summary(pl.UTF-8):	Prosty system zdarzeń
 Group:		Libraries/Python
+Requires:	python3-modules >= 1:3.4
+Requires:	python3-zope-base
 
 %description -n python3-%{module}
 The zope.event package provides a simple event system. It provides:
@@ -67,18 +82,44 @@ Pakiet zope.event udostępnia prosty system zdarzeń. Zawiera:
   system przekazywania zdarzeń oparty na typach, zbudowany w oparciu o
   zope.event, można znaleźć w zope.component)
 
+%package apidocs
+Summary:	API documentation for Python zope.event module
+Summary(pl.UTF-8):	Dokumentacja API modułu Pythona zope.event
+Group:		Documentation
+
+%description apidocs
+API documentation for Python zope.event module.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API modułu Pythona zope.event.
+
 %prep
 %setup -q -n %{module}-%{version}
 
 %build
 %if %{with python2}
-%py_build %{?with_tests:test}
+%py_build
+
+%if %{with tests}
+PYTHONPATH=$(pwd)/src \
+%{__python} -m zope.testrunner --test-path=src
+%endif
 %endif
 
 %if %{with python3}
-%py3_build %{?with_tests:test}
+%py3_build
+
+%if %{with tests}
+PYTHONPATH=$(pwd)/src \
+%{__python3} -m zope.testrunner --test-path=src
+%endif
 %endif
 
+%if %{with doc}
+PYTHONPATH=$(pwd)/src \
+%{__make} -C docs html \
+	SPHINXBUILD=sphinx-build-2
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -98,18 +139,25 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%if %{with python2}
 %files
 %defattr(644,root,root,755)
-%if %{with python2}
+%doc CHANGES.rst COPYRIGHT.txt LICENSE.txt README.rst
 %{py_sitedir}/zope/event
-%{py_sitedir}/zope.event-*.egg-info
-%{py_sitedir}/zope.event-*-nspkg.pth
+%{py_sitedir}/zope.event-%{version}-py*.egg-info
+%{py_sitedir}/zope.event-%{version}-py*-nspkg.pth
 %endif
 
+%if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%if %{with python3}
 %{py3_sitedir}/zope/event
-%{py3_sitedir}/zope.event-*.egg-info
-%{py3_sitedir}/zope.event-*-nspkg.pth
+%{py3_sitedir}/zope.event-%{version}-py*.egg-info
+%{py3_sitedir}/zope.event-%{version}-py*-nspkg.pth
+%endif
+
+%if %{with doc}
+%files apidocs
+%defattr(644,root,root,755)
+%doc docs/_build/html/{_modules,_static,*.html,*.js}
 %endif
