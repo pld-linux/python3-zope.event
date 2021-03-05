@@ -10,7 +10,7 @@ Summary:	Simple event system
 Summary(pl.UTF-8):	Prosty system zdarzeń
 Name:		python-%{module}
 Version:	4.4
-Release:	1
+Release:	2
 License:	ZPL v2.1
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/zope-event/
@@ -41,6 +41,7 @@ BuildRequires:	sphinx-pdg
 Requires:	python-modules >= 1:2.7
 Requires:	python-zope-base
 Obsoletes:	Zope-Event
+BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -125,14 +126,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with python2}
 %py_install \
-	--install-purelib=%{py_sitedir}
+	--install-purelib=%{py_sitescriptdir}
 
 %py_postclean
 %endif
 
 %if %{with python3}
 %py3_install \
-	--install-purelib=%{py3_sitedir}
+	--install-purelib=%{py3_sitescriptdir}
 %endif
 
 %clean
@@ -142,17 +143,17 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CHANGES.rst COPYRIGHT.txt LICENSE.txt README.rst
-%{py_sitedir}/zope/event
-%{py_sitedir}/zope.event-%{version}-py*.egg-info
-%{py_sitedir}/zope.event-%{version}-py*-nspkg.pth
+%{py_sitescriptdir}/zope/event
+%{py_sitescriptdir}/zope.event-%{version}-py*.egg-info
+%{py_sitescriptdir}/zope.event-%{version}-py*-nspkg.pth
 %endif
 
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%{py3_sitedir}/zope/event
-%{py3_sitedir}/zope.event-%{version}-py*.egg-info
-%{py3_sitedir}/zope.event-%{version}-py*-nspkg.pth
+%{py3_sitescriptdir}/zope/event
+%{py3_sitescriptdir}/zope.event-%{version}-py*.egg-info
+%{py3_sitescriptdir}/zope.event-%{version}-py*-nspkg.pth
 %endif
 
 %if %{with doc}
