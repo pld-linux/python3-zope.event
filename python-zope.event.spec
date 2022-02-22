@@ -9,13 +9,13 @@
 Summary:	Simple event system
 Summary(pl.UTF-8):	Prosty system zdarzeń
 Name:		python-%{module}
-Version:	4.4
-Release:	4
+Version:	4.5.0
+Release:	1
 License:	ZPL v2.1
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/zope-event/
 Source0:	https://files.pythonhosted.org/packages/source/z/zope.event/zope.event-%{version}.tar.gz
-# Source0-md5:	54e5bf148548726d626ec47bb01bec41
+# Source0-md5:	bc38324cb29ce2d759c3cb56ea199995
 URL:		https://www.zope.org/
 %if %{with python2}
 BuildRequires:	python >= 1:2.7
@@ -26,8 +26,8 @@ BuildRequires:	python-zope.testrunner
 %endif
 %endif
 %if %{with python3}
-BuildRequires:	python3 >= 1:3.4
-BuildRequires:	python3-devel >= 1:3.4
+BuildRequires:	python3 >= 1:3.5
+BuildRequires:	python3-devel >= 1:3.5
 BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-zope.testrunner
@@ -40,7 +40,7 @@ BuildRequires:	sphinx-pdg
 %endif
 Requires:	python-modules >= 1:2.7
 Requires:	python-zope-base
-Obsoletes:	Zope-Event
+Obsoletes:	Zope-Event < 3.5.0
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -64,7 +64,7 @@ Pakiet zope.event udostępnia prosty system zdarzeń. Zawiera:
 Summary:	Simple event system
 Summary(pl.UTF-8):	Prosty system zdarzeń
 Group:		Libraries/Python
-Requires:	python3-modules >= 1:3.4
+Requires:	python3-modules >= 1:3.5
 Requires:	python3-zope-base
 
 %description -n python3-%{module}
