@@ -9,13 +9,13 @@
 Summary:	Simple event system
 Summary(pl.UTF-8):	Prosty system zdarzeń
 Name:		python-%{module}
-Version:	4.5.0
-Release:	5
+Version:	4.6
+Release:	1
 License:	ZPL v2.1
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/zope-event/
 Source0:	https://files.pythonhosted.org/packages/source/z/zope.event/zope.event-%{version}.tar.gz
-# Source0-md5:	bc38324cb29ce2d759c3cb56ea199995
+# Source0-md5:	6f69e83b0317fb890774defdaa576a1e
 URL:		https://www.zope.org/
 %if %{with python2}
 BuildRequires:	python >= 1:2.7
