@@ -9,6 +9,7 @@
 Summary:	Simple event system
 Summary(pl.UTF-8):	Prosty system zdarzeń
 Name:		python-%{module}
+# keep 4.x here for python2 support
 Version:	4.6
 Release:	1
 License:	ZPL v2.1
@@ -36,7 +37,7 @@ BuildRequires:	python3-zope.testrunner
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with doc}
-BuildRequires:	sphinx-pdg
+BuildRequires:	sphinx-pdg-2
 %endif
 Requires:	python-modules >= 1:2.7
 Requires:	python-zope-base
@@ -118,7 +119,8 @@ PYTHONPATH=$(pwd)/src \
 
 %if %{with doc}
 PYTHONPATH=$(pwd)/src \
-%{__make} -C docs html
+%{__make} -C docs html \
+	SPHINXBUILD=sphinx-build-2
 %endif
 
 %install
