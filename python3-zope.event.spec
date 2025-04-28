@@ -23,6 +23,7 @@ BuildRequires:	python3-zope.testrunner
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
+BuildRequires:	sed >= 4.0
 %if %{with doc}
 BuildRequires:	sphinx-pdg-3
 %endif
@@ -60,6 +61,11 @@ Dokumentacja API modułu Pythona zope.event.
 
 %prep
 %setup -q -n %{module}-%{version}
+
+%if %{with doc}
+# incorrect mapping?
+%{__sed} -i -e '/^intersphinx_mapping/,/^}/ d' docs/conf.py
+%endif
 
 %build
 %py3_build
